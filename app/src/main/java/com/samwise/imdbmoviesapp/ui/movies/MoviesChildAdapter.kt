@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentItemBinding
 
-class MoviesChildAdapter : PagingDataAdapter<Movie, MoviesChildAdapter.MoviesChildViewHolder>(DiffUtil()) {
+class MoviesChildAdapter(val movies: ListOfMovies) : PagingDataAdapter<Movie, MoviesChildAdapter.MoviesChildViewHolder>(DiffUtil()) {
 
     override fun onBindViewHolder(holder: MoviesChildViewHolder, position: Int) {
          val currentItem = getItem(position)
          if (currentItem != null) {
-            holder.bind(currentItem)
+            holder.bind(movies.listOfMovies[position])
          }
     }
 
@@ -27,12 +27,10 @@ class MoviesChildAdapter : PagingDataAdapter<Movie, MoviesChildAdapter.MoviesChi
               }
               fun bind(movie: Movie){
                  binding.apply {
-                       title1.text
-                       title2.text
-                       title3.text
+                       title.text = movie.title
+                       rating.text = movie.imDbRatingCount
                  }
               }
-
     }
 
     class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<Movie>() {

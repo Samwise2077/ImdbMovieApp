@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class MoviesRepository @Inject constructor(
     private val imdbApi: ImdbApi) {
 
-    fun getMoviesComingSoon() : PagingData<Movie> {
+    fun getMoviesComingSoon() : LiveData<PagingData<ListOfMovies>> {
         return Pager(
             config = PagingConfig(
                pageSize = 20,
@@ -25,8 +25,7 @@ class MoviesRepository @Inject constructor(
                enablePlaceholders = false
             ),
             pagingSourceFactory ={MoviesPagingSource(imdbApi, Query.COMING_SOON)}
-
-        )
+        ).liveData
     }
 
     fun getAllLists() : PagingData<ListOfMovies>{
