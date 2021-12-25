@@ -24,14 +24,14 @@ class MoviesPagingSource(
         return try {
             val response =
                 when(typeOfQuery){
-                 //   Query.COMING_SOON -> imdbApi.searchMoviesComingSoon("en")
-                    Query.ALL_LISTS -> listOf(imdbApi.searchMoviesComingSoon("en").movies)
+                    Query.COMING_SOON -> listOf(ListOfMovies(imdbApi.searchMoviesComingSoon("en").movies, Query.COMING_SOON))
+                    Query.ALL_LISTS -> listOf()
                 }
-            val movies = ListOfMovies(response)
+           // val movies = ListOfMovies(response)
             LoadResult.Page(
-                data = movies,
+                data = response,
                 prevKey = if(position == MOVIE_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if(movies.isEmpty()) null else position + 1
+                nextKey = if(response.isEmpty()) null else position + 1
             )
         }
         catch (exception: IOException){
@@ -44,7 +44,7 @@ class MoviesPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, ListOfMovies>): Int? {
         TODO("Not yet implemented")
     }
 
