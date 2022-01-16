@@ -11,13 +11,12 @@ interface ImdbApi {
         const val BASE_URL = "https://imdb-api.com/"
     }
 
-    @Headers("X-Api-Key: ${CLIENT_ID}")
-    @GET("ComingSoon")
-    fun searchMoviesComingSoon(
-        @Query("lang") language: String
+ //   @Headers("X-Api-Key: ${CLIENT_ID}")
+    @GET("API/ComingSoon")
+    suspend fun searchMoviesComingSoon(
+        @Query("lang") language: String = "en",
+        @Query("apiKey") apiKey: String = CLIENT_ID
     ) : ImdbResponse
-
-
 }
 
 enum class Query{

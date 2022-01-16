@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/galleryFragment">
+    app:startDestination="@id/moviesFragment">
 
     <fragment
-        android:id="@+id/galleryFragment"
-        android:name="com.samwise.imdbmoviesapp.ui.movies.GalleryFragment"
+        android:id="@+id/moviesFragment"
+        android:name="com.samwise.imdbmoviesapp.ui.movies.MoviesFragment"
         android:label="gallery_fragment"
         tools:layout="@layout/gallery_fragment" />
 </navigation>

@@ -28,9 +28,9 @@ class MoviesRepository @Inject constructor(
         ).liveData
     }
 
-    fun getAllLists() : PagingData<ListOfMovies>{
+   /* fun getAllLists() : PagingData<ListOfMovies>{
         val pagingData =
-    }
+    }*/
 
 
 }

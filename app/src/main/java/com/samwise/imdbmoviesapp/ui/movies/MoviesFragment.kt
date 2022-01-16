@@ -28,8 +28,10 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment) {
             parentRecyclerView.adapter = adapter
         }
 
-        viewModel.moviesFlow.observe(viewLifecycleOwner){
-              adapter.submitList( it)
+        viewModel.moviesSoonFlow.observe(viewLifecycleOwner){
+            if(it != null){
+                adapter.submitData(lifecycle, it)
+            }
         }
     }
 }

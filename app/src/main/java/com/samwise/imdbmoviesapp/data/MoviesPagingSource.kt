@@ -22,16 +22,24 @@ class MoviesPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListOfMovies> {
         val position = params.key ?: MOVIE_STARTING_PAGE_INDEX
         return try {
-            val response =
+           /* val response =
                 when(typeOfQuery){
-                    Query.COMING_SOON -> listOf(ListOfMovies(imdbApi.searchMoviesComingSoon("en").movies, Query.COMING_SOON))
-                    Query.ALL_LISTS -> listOf()
-                }
-           // val movies = ListOfMovies(response)
+                    Query.COMING_SOON ->
+                        listOf(ListOfMovies(imdbApi.searchMoviesComingSoon("en").movies, Query.COMING_SOON))
+                    Query.ALL_LISTS -> TODO("later")
+                }*/
+
+           val response = imdbApi.searchMoviesComingSoon("en")
+            Log.d(TAG, "load: ${response.items}")
+
+            val movies = listOf(ListOfMovies(response.items, Query.COMING_SOON))
+
+
+           // val movies = response.
             LoadResult.Page(
-                data = response,
+                data = movies,
                 prevKey = if(position == MOVIE_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if(response.isEmpty()) null else position + 1
+                nextKey = if(movies.isEmpty()) null else position + 1
             )
         }
         catch (exception: IOException){

@@ -17,7 +17,7 @@ data class Movie(
     val imDbRating: String,
     val imDbRatingCount: String,
     val metacriticRating: String,
-    val genreList: List<String>,
-    val directorList: List<String>,
-    val starList : List<String>,
+  //  val genreList: Map<String, String>,
+  //  val directorList: Map<String, String>,
+  //  val starList : Map<String, String>,
 ) : Parcelable

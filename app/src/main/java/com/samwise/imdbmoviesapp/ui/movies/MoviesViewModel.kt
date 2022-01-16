@@ -16,7 +16,7 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     private val repository: MoviesRepository
 ) : ViewModel() {
-   val moviesFlow =
+   val moviesSoonFlow =
      repository.getMoviesComingSoon().cachedIn(viewModelScope)
 
 }
