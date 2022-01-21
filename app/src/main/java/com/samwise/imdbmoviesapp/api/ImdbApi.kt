@@ -6,8 +6,12 @@ import retrofit2.http.Query
 
 interface ImdbApi {
 
+    //Samwise - "k_pwxueno2"
+    //Samwise2 -"k_plyw0b4y"
+
+
     companion object{
-        const val CLIENT_ID = "k_pwxueno2"
+        const val CLIENT_ID = "k_plyw0b4y"
         const val BASE_URL = "https://imdb-api.com/"
     }
 

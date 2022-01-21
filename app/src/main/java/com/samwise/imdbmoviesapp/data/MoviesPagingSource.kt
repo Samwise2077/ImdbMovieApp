@@ -37,6 +37,7 @@ class MoviesPagingSource(
 
            // val movies = response.
             LoadResult.Page(
+
                 data = movies,
                 prevKey = if(position == MOVIE_STARTING_PAGE_INDEX) null else position - 1,
                 nextKey = if(movies.isEmpty()) null else position + 1
@@ -55,6 +56,4 @@ class MoviesPagingSource(
     override fun getRefreshKey(state: PagingState<Int, ListOfMovies>): Int? {
         TODO("Not yet implemented")
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.samwise.imdbmoviesapp.ui.movies
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -10,9 +11,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentItemBinding
 
+private const val TAG = "MoviesChildAdapter"
+
 class MoviesChildAdapter(private val listener: OnItemClickListener) : ListAdapter<Movie, MoviesChildAdapter.MoviesChildViewHolder>(DiffUtil()) {
 
     override fun onBindViewHolder(holder: MoviesChildViewHolder, position: Int) {
+        Log.d(TAG, "onBindChildViewHolder: child")
          val currentItem = getItem(position)
          if (currentItem != null) {
             holder.bind(currentItem)
@@ -20,6 +24,7 @@ class MoviesChildAdapter(private val listener: OnItemClickListener) : ListAdapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesChildViewHolder {
+        Log.d(TAG, "onCreateChildViewHolder:  child")
         val binding = GalleryFragmentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MoviesChildViewHolder(binding)
     }

@@ -19,6 +19,7 @@ class MoviesParentAdapter : PagingDataAdapter<ListOfMovies, MoviesParentAdapter.
          val pool = RecyclerView.RecycledViewPool()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesParentViewHolder {
+            Log.d(TAG, "onCreateViewHolder: successfully")
         val binding = ItemParentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MoviesParentViewHolder(binding)
     }
