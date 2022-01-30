@@ -17,9 +17,9 @@ class MoviesPagingSource(
     private val imdbApi: ImdbApi,
     private val typeOfQuery: Query,
     val query: String = ""
-) : PagingSource<Int, ListOfMovies>() {
+) : PagingSource<Int, Movie>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListOfMovies> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val position = params.key ?: MOVIE_STARTING_PAGE_INDEX
         return try {
            /* val response =
@@ -29,10 +29,10 @@ class MoviesPagingSource(
                     Query.ALL_LISTS -> TODO("later")
                 }*/
 
-           val response = imdbApi.searchMoviesComingSoon("en")
-            Log.d(TAG, "load: ${response.items}")
+           val movies = imdbApi.searchMoviesComingSoon("en").items
+            Log.d(TAG, "load: ${movies}")
 
-            val movies = listOf(ListOfMovies(response.items, Query.COMING_SOON))
+
 
 
            // val movies = response.
@@ -53,7 +53,7 @@ class MoviesPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, ListOfMovies>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         TODO("Not yet implemented")
     }
 }

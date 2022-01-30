@@ -20,8 +20,7 @@ private const val TAG = "MoviesRepository"
 class MoviesRepository @Inject constructor(
     private val imdbApi: ImdbApi) {
 
-    fun getMoviesComingSoon() : LiveData<PagingData<ListOfMovies>> {
-        Log.d(TAG, "getMoviesComingSoon: fuck youuuuu")
+    fun getMoviesComingSoon() : LiveData<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                pageSize = 1,
@@ -35,6 +34,4 @@ class MoviesRepository @Inject constructor(
    /* fun getAllLists() : PagingData<ListOfMovies>{
         val pagingData =
     }*/
-
-
 }

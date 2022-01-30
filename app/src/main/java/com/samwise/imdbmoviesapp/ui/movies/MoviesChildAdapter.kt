@@ -8,19 +8,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentItemBinding
 
 private const val TAG = "MoviesChildAdapter"
 
-class MoviesChildAdapter(private val listener: OnItemClickListener) : ListAdapter<Movie, MoviesChildAdapter.MoviesChildViewHolder>(DiffUtil()) {
+class MoviesChildAdapter(private val listener: OnItemClickListener, val typeOfQuery: Query) : PagingDataAdapter<Movie, MoviesChildAdapter.MoviesChildViewHolder>(DiffUtil()) {
 
     override fun onBindViewHolder(holder: MoviesChildViewHolder, position: Int) {
+        Log.d("", "" + this@MoviesChildAdapter)
         Log.d(TAG, "onBindChildViewHolder: child")
-         val currentItem = getItem(position)
-         if (currentItem != null) {
-            holder.bind(currentItem)
-         }
+        Log.d(TAG, "onBindViewHolder: position - $position")
+        val currentItem = getItem(position)
+        if (currentItem != null) {
+           holder.bind(currentItem)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesChildViewHolder {
@@ -33,6 +36,7 @@ class MoviesChildAdapter(private val listener: OnItemClickListener) : ListAdapte
               init {
                   binding.root.setOnClickListener {
                       val position = bindingAdapterPosition
+                      Log.d(TAG, "bindingPosition: $bindingAdapterPosition")
                       if(position != RecyclerView.NO_POSITION){
                           val item = getItem(position)
                           if(item != null){

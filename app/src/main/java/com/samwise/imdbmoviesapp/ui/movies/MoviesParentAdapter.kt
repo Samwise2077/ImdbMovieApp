@@ -1,41 +1,50 @@
 package com.samwise.imdbmoviesapp.ui.movies
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagingData
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.ItemParentBinding
+import javax.inject.Singleton
 
 private const val TAG = "MoviesParentAdapter"
 
-class MoviesParentAdapter : PagingDataAdapter<ListOfMovies, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener{
-         val pool = RecyclerView.RecycledViewPool()
+@Singleton
+class MoviesParentAdapter : ListAdapter<PagingData<Movie>, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener,
+LifecycleOwner{
+    val pool = RecyclerView.RecycledViewPool()
+    var currentQuery: Query? = null
+    var previousQuery: Query? = null
+    var listOfMovies = listOf(MoviesChildAdapter(this, Query.COMING_SOON))
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesParentViewHolder {
-            Log.d(TAG, "onCreateViewHolder: successfully")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesParentViewHolder {
+        Log.d(TAG, "onCreateViewHolder: successfully")
         val binding = ItemParentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MoviesParentViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MoviesParentViewHolder, position: Int) {
 
-
         val currentItem = getItem(position)
+
         if (currentItem != null) {
             holder.bind(currentItem)
         }
     }
 
+    fun updateCurrentQuery(query: Query){
+        currentQuery = query
+    }
+
 
     inner class MoviesParentViewHolder(private val binding: ItemParentBinding) : RecyclerView.ViewHolder(binding.root){
-        lateinit var moviesChildAdapter: MoviesChildAdapter
         init {
             binding.root.setOnClickListener {
                val position = bindingAdapterPosition
@@ -48,30 +57,58 @@ class MoviesParentAdapter : PagingDataAdapter<ListOfMovies, MoviesParentAdapter.
             }
         }
 
-        fun bind(listOfMovies: ListOfMovies){
+        suspend fun bind(pagingData: PagingData<Movie>){
             Log.d(TAG, "bind: successfully")
-            moviesChildAdapter = MoviesChildAdapter(this@MoviesParentAdapter)
-            binding.apply {
-                childRecyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-                childRecyclerView.adapter = moviesChildAdapter
+            //moviesChildAdapter = MoviesChildAdapter(this@MoviesParentAdapter)
+
+            for(i in listOfMovies){
+                if (i.typeOfQuery == currentQuery) {
+                    if(currentQuery == previousQuery){
+                        Log.d(TAG, "bind: same list - $i")
+
+                        i.submitData(pagingData)
+                    }
+                    else{
+                        Log.d(TAG, "bind: new list - $currentQuery")
+                        previousQuery = currentQuery
+                        binding.apply {
+                            childRecyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                            childRecyclerView.adapter = i
+                        }
+                        i.submitData(pagingData)
+                    }
+                    break
+                }
             }
-            moviesChildAdapter.submitList(listOfMovies.listOfMovies)
         }
     }
 
-    class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<ListOfMovies>() {
-        override fun areItemsTheSame(oldItem: ListOfMovies, newItem: ListOfMovies): Boolean {
-            return oldItem.typeOfList == newItem.typeOfList
+
+    class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<PagingData<Movie>>() {
+
+        override fun areItemsTheSame(
+            oldItem: PagingData<Movie>,
+            newItem: PagingData<Movie>
+        ): Boolean {
+            TODO("Not yet implemented")
         }
 
-        override fun areContentsTheSame(oldItem: ListOfMovies, newItem: ListOfMovies): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(
+            oldItem: PagingData<Movie>,
+            newItem: PagingData<Movie>
+        ): Boolean {
+            TODO("Not yet implemented")
         }
+
 
     }
 
 
     override fun onItemClick(movie: Movie) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLifecycle(): Lifecycle {
         TODO("Not yet implemented")
     }
 }
