@@ -1,15 +1,8 @@
 package com.samwise.imdbmoviesapp.data
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.samwise.imdbmoviesapp.api.ImdbApi
-import com.samwise.imdbmoviesapp.api.Query
-import com.samwise.imdbmoviesapp.ui.movies.ListOfMovies
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,15 +13,24 @@ private const val TAG = "MoviesRepository"
 class MoviesRepository @Inject constructor(
     private val imdbApi: ImdbApi) {
 
-    fun getMoviesComingSoon() : LiveData<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-               pageSize = 1,
-               maxSize = 5,
-               enablePlaceholders = false
-            ),
-            pagingSourceFactory ={MoviesPagingSource(imdbApi, Query.COMING_SOON)}
-        ).liveData
+    suspend fun getMoviesComingSoon(): List<Movie> {
+        return imdbApi.searchMoviesComingSoon().items
+    }
+
+    suspend fun getMostPopularMovies(): List<Movie> {
+        return imdbApi.searchMostPopularMovies().items
+    }
+
+    suspend fun getMoviesInTheaters(): List<Movie> {
+        return imdbApi.searchMoviesInTheaters().items
+    }
+
+    suspend fun getTop250Movies(): List<Movie> {
+        return imdbApi.searchTop250Movies().items
+    }
+
+    suspend fun getTop250Tvs(): List<Movie> {
+        return imdbApi.searchTop250Tvs().items
     }
 
    /* fun getAllLists() : PagingData<ListOfMovies>{

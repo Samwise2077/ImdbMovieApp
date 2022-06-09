@@ -1,11 +1,10 @@
 package com.samwise.imdbmoviesapp.ui.movies
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.paging.PagingData
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,12 +16,13 @@ import javax.inject.Singleton
 private const val TAG = "MoviesParentAdapter"
 
 @Singleton
-class MoviesParentAdapter : ListAdapter<PagingData<Movie>, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener,
-LifecycleOwner{
+class MoviesParentAdapter : ListAdapter<RecyclerViewItem, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener{
     val pool = RecyclerView.RecycledViewPool()
-    var currentQuery: Query? = null
     var previousQuery: Query? = null
-    var listOfMovies = listOf(MoviesChildAdapter(this, Query.COMING_SOON))
+    var listOfAdapters = listOf(listOf(SectionAdapter(),MoviesChildAdapter(this, Query.COMING_SOON)), listOf(SectionAdapter(), MoviesChildAdapter(this, Query.MostPopularMovies)),
+        listOf(SectionAdapter(), MoviesChildAdapter(this, Query.Top250Movies)), listOf(SectionAdapter(), MoviesChildAdapter(this, Query.Top250TVs)),
+        listOf(SectionAdapter(), MoviesChildAdapter(this, Query.IN_THEATERS)))
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesParentViewHolder {
         Log.d(TAG, "onCreateViewHolder: successfully")
@@ -34,70 +34,84 @@ LifecycleOwner{
 
         val currentItem = getItem(position)
 
-        if (currentItem != null) {
-            holder.bind(currentItem)
+        if (currentItem is MoviesItem) {
+            holder.bind(currentItem.listOfMovies)
+        }
+        else if(currentItem is SectionItem){
+            holder.bind(currentItem.title)
         }
     }
-
-    fun updateCurrentQuery(query: Query){
-        currentQuery = query
-    }
-
 
     inner class MoviesParentViewHolder(private val binding: ItemParentBinding) : RecyclerView.ViewHolder(binding.root){
         init {
             binding.root.setOnClickListener {
-               val position = bindingAdapterPosition
-               if(position != RecyclerView.NO_POSITION){
-                   val item = getItem(position)
-                   if(item != null){
+                val position = bindingAdapterPosition
+                if(position != RecyclerView.NO_POSITION){
+                    val item = getItem(position)
+                    if(item != null){
 
-                   }
-               }
+                    }
+                }
             }
         }
 
-        suspend fun bind(pagingData: PagingData<Movie>){
+        fun bind(listOfMovies: ListOfMovies){
             Log.d(TAG, "bind: successfully")
             //moviesChildAdapter = MoviesChildAdapter(this@MoviesParentAdapter)
 
-            for(i in listOfMovies){
-                if (i.typeOfQuery == currentQuery) {
-                    if(currentQuery == previousQuery){
-                        Log.d(TAG, "bind: same list - $i")
-
-                        i.submitData(pagingData)
+            for(i in listOfAdapters){
+                if ((i[1] as MoviesChildAdapter).typeOfQuery == listOfMovies.typeOfList) {
+                    if(listOfMovies.typeOfList == previousQuery){
+                        Log.d(TAG, "bind: same list - $listOfMovies.typeOfList")
+                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies)
                     }
-                    else{
-                        Log.d(TAG, "bind: new list - $currentQuery")
-                        previousQuery = currentQuery
+                    else {
+                        previousQuery = listOfMovies.typeOfList
                         binding.apply {
                             childRecyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-                            childRecyclerView.adapter = i
+                            childRecyclerView.adapter = (i[1] as MoviesChildAdapter)
                         }
-                        i.submitData(pagingData)
+                  //      (i[0] as SectionAdapter).submitList(listOf((i[1] as MoviesChildAdapter).typeOfQuery.name))
+                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies)
                     }
                     break
                 }
             }
         }
+
+        fun bind(title: String){
+            Log.d(TAG, "working $title")
+            for (i in listOfAdapters){
+                if(title == (i[1] as MoviesChildAdapter).typeOfQuery.name){
+                    binding.apply {
+                        childRecyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                        childRecyclerView.adapter = (i[0] as SectionAdapter)
+                        childRecyclerView.layout(2, 2, 2, 2)
+                       // childRecyclerView.
+                    }
+                    Log.d(TAG, "working title 2")
+                    (i[0] as SectionAdapter).submitList(listOf(title))
+                }
+            }
+
+        }
     }
 
+    class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<RecyclerViewItem>() {
 
-    class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<PagingData<Movie>>() {
-
-        override fun areItemsTheSame(
-            oldItem: PagingData<Movie>,
-            newItem: PagingData<Movie>
-        ): Boolean {
-            TODO("Not yet implemented")
+        override fun areItemsTheSame(oldItem: RecyclerViewItem, newItem: RecyclerViewItem): Boolean {
+            if(oldItem is MoviesItem && newItem is MoviesItem){
+                return oldItem.listOfMovies.typeOfList == newItem.listOfMovies.typeOfList
+            }
+            else if(oldItem is SectionItem && newItem is SectionItem){
+                return oldItem.title == newItem.title
+            }
+            else return false
         }
 
-        override fun areContentsTheSame(
-            oldItem: PagingData<Movie>,
-            newItem: PagingData<Movie>
-        ): Boolean {
-            TODO("Not yet implemented")
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(oldItem: RecyclerViewItem, newItem: RecyclerViewItem): Boolean {
+            return oldItem == newItem
         }
 
 
@@ -105,10 +119,6 @@ LifecycleOwner{
 
 
     override fun onItemClick(movie: Movie) {
-        TODO("Not yet implemented")
-    }
 
-    override fun getLifecycle(): Lifecycle {
-        TODO("Not yet implemented")
     }
 }
