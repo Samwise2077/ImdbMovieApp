@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +15,16 @@ import javax.inject.Singleton
 private const val TAG = "MoviesParentAdapter"
 
 @Singleton
-class MoviesParentAdapter : ListAdapter<RecyclerViewItem, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener{
+class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<RecyclerViewItem, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener{
     val pool = RecyclerView.RecycledViewPool()
+
+    interface EventListener{
+        fun onNavigate(movie: Movie)
+    }
+
     var previousQuery: Query? = null
-    var listOfAdapters = listOf(listOf(SectionAdapter(),MoviesChildAdapter(this, Query.COMING_SOON)), listOf(SectionAdapter(), MoviesChildAdapter(this, Query.MostPopularMovies)),
-        listOf(SectionAdapter(), MoviesChildAdapter(this, Query.Top250Movies)), listOf(SectionAdapter(), MoviesChildAdapter(this, Query.Top250TVs)),
+    var listOfAdapters = listOf(listOf(SectionAdapter(),MoviesChildAdapter(this, Query.COMING_SOON)), listOf(SectionAdapter(), MoviesChildAdapter(this, Query.MOST_POPULAR_MOVIES)),
+        listOf(SectionAdapter(), MoviesChildAdapter(this, Query.TOP_250_MOVIES)), listOf(SectionAdapter(), MoviesChildAdapter(this, Query.TOP_250_TVs)),
         listOf(SectionAdapter(), MoviesChildAdapter(this, Query.IN_THEATERS)))
 
 
@@ -38,6 +42,7 @@ class MoviesParentAdapter : ListAdapter<RecyclerViewItem, MoviesParentAdapter.Mo
             holder.bind(currentItem.listOfMovies)
         }
         else if(currentItem is SectionItem){
+            Log.d(TAG, "needed title = ${currentItem.title}")
             holder.bind(currentItem.title)
         }
     }
@@ -87,7 +92,6 @@ class MoviesParentAdapter : ListAdapter<RecyclerViewItem, MoviesParentAdapter.Mo
                         childRecyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                         childRecyclerView.adapter = (i[0] as SectionAdapter)
                         childRecyclerView.layout(2, 2, 2, 2)
-                       // childRecyclerView.
                     }
                     Log.d(TAG, "working title 2")
                     (i[0] as SectionAdapter).submitList(listOf(title))
@@ -100,13 +104,11 @@ class MoviesParentAdapter : ListAdapter<RecyclerViewItem, MoviesParentAdapter.Mo
     class DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<RecyclerViewItem>() {
 
         override fun areItemsTheSame(oldItem: RecyclerViewItem, newItem: RecyclerViewItem): Boolean {
-            if(oldItem is MoviesItem && newItem is MoviesItem){
-                return oldItem.listOfMovies.typeOfList == newItem.listOfMovies.typeOfList
-            }
-            else if(oldItem is SectionItem && newItem is SectionItem){
-                return oldItem.title == newItem.title
-            }
-            else return false
+            return if(oldItem is MoviesItem && newItem is MoviesItem){
+                oldItem.listOfMovies.typeOfList == newItem.listOfMovies.typeOfList
+            } else if(oldItem is SectionItem && newItem is SectionItem){
+                oldItem.title == newItem.title
+            } else false
         }
 
         @SuppressLint("DiffUtilEquals")
@@ -117,8 +119,9 @@ class MoviesParentAdapter : ListAdapter<RecyclerViewItem, MoviesParentAdapter.Mo
 
     }
 
-
     override fun onItemClick(movie: Movie) {
-
+        listener.onNavigate(movie)
     }
+
+
 }

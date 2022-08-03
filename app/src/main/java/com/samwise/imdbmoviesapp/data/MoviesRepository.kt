@@ -1,6 +1,7 @@
 package com.samwise.imdbmoviesapp.data
 
 import com.samwise.imdbmoviesapp.api.ImdbApi
+import com.samwise.imdbmoviesapp.api.ImdbSimilarResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
@@ -33,7 +34,12 @@ class MoviesRepository @Inject constructor(
         return imdbApi.searchTop250Tvs().items
     }
 
-   /* fun getAllLists() : PagingData<ListOfMovies>{
-        val pagingData =
-    }*/
+    suspend fun getMovie(id: String): Movie {
+        return imdbApi.searchMovie(id = id)
+    }
+
+    suspend fun getReviews(id: String) : Reviews{
+        return imdbApi.searchReviews(id = id)
+    }
+
 }

@@ -58,7 +58,7 @@ class MoviesChildAdapter(private val listener: OnItemClickListener, val typeOfQu
             binding.apply {
                 title.text = movie.title
                 if(typeOfQuery == Query.COMING_SOON){
-                    rating.text = movie.releaseState
+                  //  rating.text = movie.releaseState
                     star.isVisible = false
                 }
                 else if(typeOfQuery == Query.IN_THEATERS){

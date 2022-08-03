@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentItemTitleBinding
+import java.util.*
 
 
-
-class SectionAdapter() : ListAdapter<String, SectionAdapter.SectionViewHolder>(DiffUtil()){
+class SectionAdapter : ListAdapter<String, SectionAdapter.SectionViewHolder>(DiffUtil()){
 
 
     class SectionViewHolder(private val binding: GalleryFragmentItemTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(title : String){
             binding.apply {
-                type.text = title
-                Log.d("TAG", "title = $title")
+
+                type.text = title.replace('_', ' ').lowercase()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             }
         }
     }

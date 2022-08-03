@@ -11,11 +11,18 @@
         android:label="gallery_fragment"
         tools:layout="@layout/gallery_fragment" >
         <action
-            android:id="@+id/action_moviesFragment_to_detailsFragment"
+            android:id="@+id/action_moviesFragment_to_detailsFragment2"
             app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.samwise.imdbmoviesapp.ui.details.DetailsFragment"
-        android:label="DetailsFragment" />
+        android:label="DetailsFragment" >
+        <argument
+            android:name="movie"
+            app:argType="com.samwise.imdbmoviesapp.data.Movie" />
+        <action
+            android:id="@+id/action_detailsFragment_self"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 </navigation>

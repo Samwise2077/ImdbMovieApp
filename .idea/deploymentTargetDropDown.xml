@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\samvi\.android\avd\Samsung_A12_API_31.ini" />
+            <value value="C:\Users\samvi\.android\avd\Pixel_3_API_31.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-03-23T00:31:47.835888800Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-08-03T01:03:17.098474200Z" />
   </component>
 </project>
