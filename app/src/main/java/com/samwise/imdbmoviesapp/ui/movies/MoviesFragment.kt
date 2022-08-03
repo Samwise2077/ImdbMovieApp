@@ -15,6 +15,7 @@ import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentBinding
 import com.samwise.imdbmoviesapp.databinding.MovieDetailsFragmentBinding
+import com.samwise.imdbmoviesapp.ui.movies.adapters.MoviesParentAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect

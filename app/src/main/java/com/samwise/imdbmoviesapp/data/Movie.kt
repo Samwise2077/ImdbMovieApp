@@ -64,10 +64,6 @@ data class Movie(
     val writerList: List<StarShort>,
     val fullCastData: FullCast
 
-
-  //  val genreList: List<String, String>,
-  //  val directorList: Map<String, String>,
-  //  val starList : Map<String, String>,
 ) : Parcelable{
 
 
@@ -100,7 +96,7 @@ data class Movie(
         val seriesYear: String,
         @SerializedName("seasonNumber")
         val seasonNumber: String,
-        @SerializedName("episodeNUmber")
+        @SerializedName("episodeNumber")
         val episodeNumber: String,
         @SerializedName("previousEpisodeId")
         val previousEpisodeId: String,

@@ -1,12 +1,9 @@
-package com.samwise.imdbmoviesapp.ui.movies
+package com.samwise.imdbmoviesapp.ui.movies.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentItemTitleBinding
 import java.util.*
 

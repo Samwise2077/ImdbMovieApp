@@ -1,4 +1,4 @@
-package com.samwise.imdbmoviesapp.ui.movies
+package com.samwise.imdbmoviesapp.ui.movies.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -30,10 +30,6 @@ class MoviesChildAdapter(private val listener: OnItemClickListener, val typeOfQu
         }
     }
 
-
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesChildViewHolder {
         Log.d(TAG, "onCreateChildViewHolder:  child")
         val binding = GalleryFragmentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -58,7 +54,6 @@ class MoviesChildAdapter(private val listener: OnItemClickListener, val typeOfQu
             binding.apply {
                 title.text = movie.title
                 if(typeOfQuery == Query.COMING_SOON){
-                  //  rating.text = movie.releaseState
                     star.isVisible = false
                 }
                 else if(typeOfQuery == Query.IN_THEATERS){

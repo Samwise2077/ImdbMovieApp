@@ -1,4 +1,4 @@
-package com.samwise.imdbmoviesapp.ui.movies
+package com.samwise.imdbmoviesapp.ui.movies.adapters
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.ItemParentBinding
+import com.samwise.imdbmoviesapp.ui.movies.ListOfMovies
+import com.samwise.imdbmoviesapp.ui.movies.MoviesItem
+import com.samwise.imdbmoviesapp.ui.movies.RecyclerViewItem
+import com.samwise.imdbmoviesapp.ui.movies.SectionItem
 import javax.inject.Singleton
 
 private const val TAG = "MoviesParentAdapter"
