@@ -42,9 +42,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'dagger.hilt.android.plugin'
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.13.2'
@@ -52,20 +54,20 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // Fragment
-    implementation "androidx.fragment:fragment-ktx:1.4.1"
+    implementation "androidx.fragment:fragment-ktx:1.5.1"
 
     // Lifecycle + ViewModel & LiveData
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation "android.arch.lifecycle:common-java8:1.1.1"
 
     // Navigation Component
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.0-rc01"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.0-rc01"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.40"
@@ -76,11 +78,11 @@ dependencies {
 
     // For instrumentation tests
     androidTestImplementation  'com.google.dagger:hilt-android-testing:2.40'
-    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.40'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.40.1'
 
     // For local unit tests
     testImplementation 'com.google.dagger:hilt-android-testing:2.40'
-    kaptTest 'com.google.dagger:hilt-compiler:2.40'
+    kaptTest 'com.google.dagger:hilt-compiler:2.40.1'
 
     // DataStore
     implementation("androidx.datastore:datastore-core:1.0.0")
@@ -88,7 +90,7 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     //Gson
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // Retrofit + GSON
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
@@ -101,11 +103,13 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
 
     // Room
-    implementation "androidx.room:room-runtime:2.4.2"
-    kapt "androidx.room:room-compiler:2.4.2"
-    implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-runtime:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
 
 

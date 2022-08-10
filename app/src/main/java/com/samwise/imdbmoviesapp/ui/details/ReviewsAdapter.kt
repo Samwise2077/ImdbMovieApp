@@ -1,6 +1,5 @@
 package com.samwise.imdbmoviesapp.ui.details
 
-import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,12 @@ import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.data.ReviewDetail
-import com.samwise.imdbmoviesapp.data.Reviews
 import com.samwise.imdbmoviesapp.databinding.ReviewItemBinding
 
 private const val TAG = "ReviewsAdapter"
 
-class ReviewsAdapter(): ListAdapter<ReviewDetail, ReviewsAdapter.ReviewsViewHolder>(DiffUtil())
+class ReviewsAdapter(val listener: OnItemClickListener): ListAdapter<ReviewDetail, ReviewsAdapter.ReviewsViewHolder>(DiffUtil())
 
 {
 
@@ -35,7 +30,19 @@ class ReviewsAdapter(): ListAdapter<ReviewDetail, ReviewsAdapter.ReviewsViewHold
         return ReviewsViewHolder(binding)
     }
 
-    class ReviewsViewHolder(private val binding: ReviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ReviewsViewHolder(private val binding: ReviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener{
+                val position = bindingAdapterPosition
+                if(position != RecyclerView.NO_POSITION){
+                    val item = getItem(position)
+                    if(item != null){
+                        listener.onReviewClick(item)
+                    }
+                }
+            }
+        }
+
         fun bind(review: ReviewDetail) {
             binding.apply {
                 contentTxtView.ellipsize
@@ -75,6 +82,10 @@ class ReviewsAdapter(): ListAdapter<ReviewDetail, ReviewsAdapter.ReviewsViewHold
             return oldItem == newItem
         }
 
+    }
+
+    interface OnItemClickListener{
+        fun onReviewClick(review: ReviewDetail)
     }
 
 

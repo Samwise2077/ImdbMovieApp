@@ -7,21 +7,15 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.samwise.imdbmoviesapp.R
 import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentBinding
-import com.samwise.imdbmoviesapp.databinding.MovieDetailsFragmentBinding
+import com.samwise.imdbmoviesapp.ui.movies.adapters.MoviesItem
 import com.samwise.imdbmoviesapp.ui.movies.adapters.MoviesParentAdapter
+import com.samwise.imdbmoviesapp.ui.movies.adapters.SectionItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import java.util.Objects.isNull
 
 private const val TAG = "GalleryFragment"
 
@@ -40,6 +34,8 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.
             parentRecyclerView.setHasFixedSize(true)
             parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             parentRecyclerView.adapter = adapter
+            parentRecyclerView.visibility = View.INVISIBLE
+
         }
 
         lifecycleScope.launchWhenCreated {
@@ -51,7 +47,11 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.
                             SectionItem(Query.MOST_POPULAR_MOVIES.name), MoviesItem(event.list[1]),
                             SectionItem(Query.IN_THEATERS.name), MoviesItem(event.list[2]),
                             SectionItem(Query.TOP_250_MOVIES.name), MoviesItem(event.list[3]),
-                            SectionItem(Query.TOP_250_TVs.name), MoviesItem(event.list[4])))
+                            SectionItem(Query.TOP_250_TVs.name), MoviesItem(event.list[4])
+                        ))
+                        binding.apply {
+                            parentRecyclerView.visibility = View.VISIBLE
+                        }
 
                         Log.d(TAG, "onViewCreated: ${event.list[4].typeOfList.name}")
                     }
@@ -78,12 +78,6 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.
         }
    }
 
-
-   private inline fun <reified T> Any?.tryCast(block: T.() -> Unit) {
-        if (this is T) {
-            block()
-        }
-    }
 
     override fun onNavigate(movie: Movie) {
         viewModel.onMovieDetailsClicked(movie)

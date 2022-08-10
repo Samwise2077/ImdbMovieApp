@@ -3,21 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/moviesFragment">
+    app:startDestination="@id/ImDb">
 
     <fragment
-        android:id="@+id/moviesFragment"
+        android:id="@+id/ImDb"
         android:name="com.samwise.imdbmoviesapp.ui.movies.MoviesFragment"
-        android:label="gallery_fragment"
-        tools:layout="@layout/gallery_fragment" >
+        tools:layout="@layout/gallery_fragment">
         <action
             android:id="@+id/action_moviesFragment_to_detailsFragment2"
             app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.samwise.imdbmoviesapp.ui.details.DetailsFragment"
-        android:label="DetailsFragment" >
+        android:name="com.samwise.imdbmoviesapp.ui.details.DetailsFragment">
         <argument
             android:name="movie"
             app:argType="com.samwise.imdbmoviesapp.data.Movie" />

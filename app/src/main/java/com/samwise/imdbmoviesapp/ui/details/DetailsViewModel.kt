@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.samwise.imdbmoviesapp.data.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +23,7 @@ class DetailsViewModel @Inject constructor(private val state: SavedStateHandle, 
     private val similars: MutableList<Movie> = mutableListOf()
     val movie = state.get<Movie>("movie")
     var selectedMovie: Movie? = null
+    val length = 0
 
     init {
         viewModelScope.launch {
@@ -65,9 +68,16 @@ class DetailsViewModel @Inject constructor(private val state: SavedStateHandle, 
         }
     }
 
+    fun onReviewClicked(review: ReviewDetail) {
+        viewModelScope.launch {
+            detailsEventChannel.send(DetailsEvent.NavigateToReviewsDetail(review))
+        }
+    }
+
     sealed class DetailsEvent{
         data class CollectData(val list: List<Movie>, val reviews: List<ReviewDetail>, val actors: List<ActorShort>): DetailsEvent()
         data class NavigateToDetailsScreen(val movie: Movie) : DetailsEvent()
+        data class NavigateToReviewsDetail(val review: ReviewDetail) : DetailsEvent()
     }
 
 }

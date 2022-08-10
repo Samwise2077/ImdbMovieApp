@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/contentTxtView"
-            android:layout_width="285dp"
+            android:layout_width="270dp"
             android:layout_height="195dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="60dp"

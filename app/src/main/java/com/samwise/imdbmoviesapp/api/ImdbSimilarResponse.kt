@@ -1,7 +1,5 @@
 package com.samwise.imdbmoviesapp.api
 
-import com.samwise.imdbmoviesapp.data.Movie
-
 data class ImdbSimilarResponse(
     val searchType: String,
     val expression: String,

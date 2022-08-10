@@ -10,16 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.ItemParentBinding
+import com.samwise.imdbmoviesapp.ui.OnItemClickListener
 import com.samwise.imdbmoviesapp.ui.movies.ListOfMovies
-import com.samwise.imdbmoviesapp.ui.movies.MoviesItem
-import com.samwise.imdbmoviesapp.ui.movies.RecyclerViewItem
-import com.samwise.imdbmoviesapp.ui.movies.SectionItem
 import javax.inject.Singleton
 
 private const val TAG = "MoviesParentAdapter"
 
 @Singleton
-class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<RecyclerViewItem, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()), MoviesChildAdapter.OnItemClickListener{
+class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<RecyclerViewItem, MoviesParentAdapter.MoviesParentViewHolder>(DiffUtil()),
+    OnItemClickListener {
     val pool = RecyclerView.RecycledViewPool()
 
     interface EventListener{
@@ -123,7 +122,7 @@ class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<Rec
 
     }
 
-    override fun onItemClick(movie: Movie) {
+    override fun onMovieClick(movie: Movie) {
         listener.onNavigate(movie)
     }
 

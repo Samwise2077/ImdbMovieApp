@@ -12,10 +12,13 @@ interface ImdbApi {
     //Samwise 1 - "k_pwxueno2"
     //Samwise 2 - "k_plyw0b4y"
     //Samwise 3 - "k_i2hks2dd"
+    //SamwiseX - "k_slnmxsf4"
+    //SamwiseX2 - "k_2c7z7evb"
+    //SamwiseX3 - "k_bbekow86"
 
 
     companion object{
-        const val CLIENT_ID =  "k_plyw0b4y"
+        const val CLIENT_ID =  "k_slnmxsf4"
         const val BASE_URL = "https://imdb-api.com/API/"
     }
 
