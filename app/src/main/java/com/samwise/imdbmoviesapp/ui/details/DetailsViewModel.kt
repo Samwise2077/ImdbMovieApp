@@ -75,7 +75,7 @@ class DetailsViewModel @Inject constructor(private val state: SavedStateHandle, 
     }
 
     sealed class DetailsEvent{
-        data class CollectData(val list: List<Movie>, val reviews: List<ReviewDetail>, val actors: List<ActorShort>): DetailsEvent()
+        data class CollectData(val sequels: List<Movie>, val reviews: List<ReviewDetail>, val actors: List<ActorShort>): DetailsEvent()
         data class NavigateToDetailsScreen(val movie: Movie) : DetailsEvent()
         data class NavigateToReviewsDetail(val review: ReviewDetail) : DetailsEvent()
     }

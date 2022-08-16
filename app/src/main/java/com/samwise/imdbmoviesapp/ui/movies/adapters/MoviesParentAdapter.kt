@@ -11,7 +11,7 @@ import com.samwise.imdbmoviesapp.api.Query
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.ItemParentBinding
 import com.samwise.imdbmoviesapp.ui.OnItemClickListener
-import com.samwise.imdbmoviesapp.ui.movies.ListOfMovies
+import com.samwise.imdbmoviesapp.data.ListOfMovies
 import javax.inject.Singleton
 
 private const val TAG = "MoviesParentAdapter"
@@ -71,7 +71,7 @@ class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<Rec
                 if ((i[1] as MoviesChildAdapter).typeOfQuery == listOfMovies.typeOfList) {
                     if(listOfMovies.typeOfList == previousQuery){
                         Log.d(TAG, "bind: same list - $listOfMovies.typeOfList")
-                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies)
+                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies.items)
                     }
                     else {
                         previousQuery = listOfMovies.typeOfList
@@ -80,7 +80,7 @@ class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<Rec
                             childRecyclerView.adapter = (i[1] as MoviesChildAdapter)
                         }
                   //      (i[0] as SectionAdapter).submitList(listOf((i[1] as MoviesChildAdapter).typeOfQuery.name))
-                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies)
+                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies.items)
                     }
                     break
                 }

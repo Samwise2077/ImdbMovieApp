@@ -1,6 +1,9 @@
 package com.samwise.imdbmoviesapp.di
 
+import android.app.Application
+import androidx.room.Room
 import com.samwise.imdbmoviesapp.api.ImdbApi
+import com.samwise.imdbmoviesapp.db.MoviesDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +31,17 @@ object AppModule {
     @Singleton
     @Provides
     fun provideImdbApi(retrofit: Retrofit) : ImdbApi = retrofit.create(ImdbApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideDatabase(app: Application) : MoviesDatabase =
+        Room.databaseBuilder(app, MoviesDatabase::class.java, "movies_database")
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Singleton
+    @Provides
+    fun provideDao(database: MoviesDatabase) = database.moviesDao()
 
 
 }

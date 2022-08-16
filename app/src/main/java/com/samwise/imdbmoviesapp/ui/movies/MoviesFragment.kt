@@ -9,7 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.samwise.imdbmoviesapp.R
+import com.samwise.imdbmoviesapp.api.ImdbResponse
 import com.samwise.imdbmoviesapp.api.Query
+import com.samwise.imdbmoviesapp.data.ListOfMovies
 import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentBinding
 import com.samwise.imdbmoviesapp.ui.movies.adapters.MoviesItem
@@ -30,11 +32,12 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.
         super.onViewCreated(view, savedInstanceState)
         val binding = GalleryFragmentBinding.bind(view)
         val adapter = MoviesParentAdapter(this)
+      //  val list = ListOfMovies(Query.MOVIE, ImdbResponse())
         binding.apply {
             parentRecyclerView.setHasFixedSize(true)
             parentRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             parentRecyclerView.adapter = adapter
-            parentRecyclerView.visibility = View.INVISIBLE
+          //  parentRecyclerView.visibility = View.INVISIBLE
 
         }
 
@@ -53,7 +56,7 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.
                             parentRecyclerView.visibility = View.VISIBLE
                         }
 
-                        Log.d(TAG, "onViewCreated: ${event.list[4].typeOfList.name}")
+                        Log.d(TAG, "onViewCreated: ${event.list[4].typeOfList?.name}")
                     }
 
                     is MoviesViewModel.MoviesEvent.NavigateToDetailsScreen -> {

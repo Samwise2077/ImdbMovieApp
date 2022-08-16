@@ -1,10 +1,15 @@
 package com.samwise.imdbmoviesapp.ui.details
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
+import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.marginTop
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -46,7 +51,7 @@ class DetailsFragment : Fragment(R.layout.movie_details_fragment),
             sequelsRecyclerView.adapter = adapter
             sequelsRecyclerView.setHasFixedSize(true)
             sequelsRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
+            sequelsRecyclerView.size
 
             fullTitle.text = viewModel.movie?.fullTitle
             date.text = viewModel.movie?.year
@@ -96,7 +101,23 @@ class DetailsFragment : Fragment(R.layout.movie_details_fragment),
                 run {
                     when (event) {
                         is DetailsViewModel.DetailsEvent.CollectData -> {
-                            adapter.submitList(event.list)
+                            adapter.submitList(event.sequels)
+                            if(event.sequels.isEmpty()){
+                                binding.apply {
+
+                                    val constraintSet = ConstraintSet()
+                                    constraintSet.clone(constraintLayout)
+                                    constraintSet.connect(ratingTextView.id, ConstraintSet.TOP, imageView.id, ConstraintSet.BOTTOM)
+                                    constraintSet.applyTo(constraintLayout)
+                                    val ratingLayoutParams = ratingTextView.layoutParams as ConstraintLayout.LayoutParams
+                                    val sequelsLayoutParams = sequelsTextView.layoutParams as ConstraintLayout.LayoutParams
+                                    ratingLayoutParams.topMargin = sequelsLayoutParams.topMargin
+                                    sequelsTextView.isInvisible= true
+                                    sequelsRecyclerView.isInvisible = true
+
+                                 //   ratingTextView.mar
+                                }
+                            }
                            if(event.reviews.size > 10){
                                reviewsAdapter.submitList(event.reviews.subList(0, 10))
                            }else{
@@ -104,6 +125,7 @@ class DetailsFragment : Fragment(R.layout.movie_details_fragment),
                            }
 
                             actorsAdapter.submitList(event.actors)
+
                         }
 
                         is DetailsViewModel.DetailsEvent.NavigateToDetailsScreen -> {
