@@ -22,14 +22,14 @@ class MoviesRepository @Inject constructor(
     private val moviesDao = database.moviesDao()
 
     suspend fun getMoviesComingSoon(): List<Movie> {
-        return imdbApi.searchMoviesComingSoon().items
+        return imdbApi.searchMoviesComingSoon().items.toList()
     }
 
     suspend fun getMostPopularMovies(): List<Movie> {
-        return imdbApi.searchMostPopularMovies().items
+        return imdbApi.searchMostPopularMovies().items.toList()
     }
 
-    fun getM() = networkBoundResource(
+    fun getMostPopular() = networkBoundResource(
         query = {
             moviesDao.getMovies(Query.MOST_POPULAR_MOVIES.name)
         },
@@ -45,16 +45,48 @@ class MoviesRepository @Inject constructor(
         }
     )
 
+    fun getInTheaters() = networkBoundResource(
+        query = {
+            moviesDao.getMovies(Query.IN_THEATERS.name)
+        },
+        fetch = {
+            delay(2000)
+            imdbApi.searchMoviesInTheaters()
+        },
+        saveFetchResult = {
+            database.withTransaction {
+                moviesDao.deleteMovies(Query.IN_THEATERS.name)
+                moviesDao.insertListOfMovies(ListOfMovies(Query.IN_THEATERS, ImdbResponse(it.items, "")))
+            }
+        }
+    )
+
+    fun getTop250M() = networkBoundResource(
+        query = {
+            moviesDao.getMovies(Query.TOP_250_MOVIES.name)
+        },
+        fetch = {
+            delay(2000)
+            imdbApi.searchTop250Movies()
+        },
+        saveFetchResult = {
+            database.withTransaction {
+                moviesDao.deleteMovies(Query.TOP_250_MOVIES.name)
+                moviesDao.insertListOfMovies(ListOfMovies(Query.TOP_250_MOVIES, ImdbResponse(it.items, "")))
+            }
+        }
+    )
+
     suspend fun getMoviesInTheaters(): List<Movie> {
-        return imdbApi.searchMoviesInTheaters().items
+        return imdbApi.searchMoviesInTheaters().items.toList()
     }
 
     suspend fun getTop250Movies(): List<Movie> {
-        return imdbApi.searchTop250Movies().items
+        return imdbApi.searchTop250Movies().items.toList()
     }
 
     suspend fun getTop250Tvs(): List<Movie> {
-        return imdbApi.searchTop250Tvs().items
+        return imdbApi.searchTop250Tvs().items.toList()
     }
 
     suspend fun getMovie(id: String): Movie {

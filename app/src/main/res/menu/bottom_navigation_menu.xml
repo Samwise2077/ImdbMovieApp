@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/homePageFragment"
+        android:title="Home Page"
+        android:icon="@drawable/ic_home_page" />
+
+    <item android:id="@+id/searchMoviesFragment"
+        android:title="Search Movies"
+        android:icon="@drawable/ic_search" />
+
+    <item android:id="@+id/profileFragment"
+        android:title="Profile"
+        android:icon="@drawable/profile" />
+</menu>

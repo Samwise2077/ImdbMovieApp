@@ -71,7 +71,7 @@ class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<Rec
                 if ((i[1] as MoviesChildAdapter).typeOfQuery == listOfMovies.typeOfList) {
                     if(listOfMovies.typeOfList == previousQuery){
                         Log.d(TAG, "bind: same list - $listOfMovies.typeOfList")
-                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies.items)
+                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies.items.toList())
                     }
                     else {
                         previousQuery = listOfMovies.typeOfList
@@ -80,7 +80,7 @@ class MoviesParentAdapter(private val listener: EventListener) : ListAdapter<Rec
                             childRecyclerView.adapter = (i[1] as MoviesChildAdapter)
                         }
                   //      (i[0] as SectionAdapter).submitList(listOf((i[1] as MoviesChildAdapter).typeOfQuery.name))
-                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies.items)
+                        (i[1] as MoviesChildAdapter).submitList(listOfMovies.listOfMovies.items.toList())
                     }
                     break
                 }

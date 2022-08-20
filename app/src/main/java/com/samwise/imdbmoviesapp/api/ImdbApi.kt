@@ -18,7 +18,7 @@ interface ImdbApi {
 
 
     companion object{
-        const val CLIENT_ID =  "k_slnmxsf4"
+        const val CLIENT_ID =  "k_2c7z7evb"
         const val BASE_URL = "https://imdb-api.com/API/"
     }
 

@@ -2,6 +2,7 @@ package com.samwise.imdbmoviesapp.ui.movies
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.samwise.imdbmoviesapp.api.ImdbResponse
 import com.samwise.imdbmoviesapp.api.Query
@@ -25,19 +26,27 @@ class MoviesViewModel @Inject constructor(
     private val moviesEventChannel = Channel<MoviesEvent>()
    val moviesEvent = moviesEventChannel.receiveAsFlow()
 
-   init {
+    val inTheaters = repository.getInTheaters().asLiveData()
+    val top250M = repository.getTop250M().asLiveData()
+    var top250T: ListOfMovies = ListOfMovies(Query.TOP_250_TVs, ImdbResponse(arrayOf(), ""))
+    var comingSoon: ListOfMovies = ListOfMovies(Query.COMING_SOON, ImdbResponse(arrayOf(), ""))
+    var shouldCache = false
+    val mostPopularMovies = repository.getMostPopular().asLiveData()
+
+
+    init {
        viewModelScope.launch {
-           movies.add(ListOfMovies(Query.COMING_SOON, ImdbResponse(repository.getMoviesComingSoon(),"")))
+           movies.add(ListOfMovies(Query.COMING_SOON, ImdbResponse(repository.getMoviesComingSoon().toTypedArray(),"")))
            movies.add(ListOfMovies(Query.MOST_POPULAR_MOVIES,
                ImdbResponse(
                repository.getMostPopularMovies().subList(0, if(repository.getMostPopularMovies().size > 20 ) 20
-               else repository.getMostPopularMovies().size), "")))
+               else repository.getMostPopularMovies().size).toTypedArray(), "")))
            movies.add(ListOfMovies(Query.IN_THEATERS,
-               ImdbResponse(repository.getMoviesInTheaters(), "")))
+               ImdbResponse(repository.getMoviesInTheaters().toTypedArray(), "")))
            movies.add(ListOfMovies(Query.TOP_250_MOVIES,
-               ImdbResponse(repository.getTop250Movies().subList(0, 20), "")))
+               ImdbResponse(repository.getTop250Movies().subList(0, 20).toTypedArray(), "")))
            movies.add(ListOfMovies(Query.TOP_250_TVs,
-               ImdbResponse(repository.getTop250Tvs().subList(0, 20), "")))
+               ImdbResponse(repository.getTop250Tvs().subList(0, 20).toTypedArray(), "")))
            moviesEventChannel.send(MoviesEvent.CollectMovies(movies))
        }
    }

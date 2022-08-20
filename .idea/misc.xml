@@ -12,6 +12,7 @@
         <entry key="..\:/CocktailsApp/app/src/main/res/layout/main_fragment.xml" value="0.1" />
         <entry key="..\:/CocktailsApp/app/src/main/res/layout/parent_recycler.xml" value="0.15260416666666668" />
         <entry key="..\:/ImdbMovieApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.192" />
+        <entry key="..\:/ImdbMovieApp/app/src/main/res/drawable/ic_all_news.xml" value="0.1825" />
         <entry key="..\:/ImdbMovieApp/app/src/main/res/drawable/ic_error.xml" value="0.178" />
         <entry key="..\:/ImdbMovieApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.192" />
         <entry key="..\:/ImdbMovieApp/app/src/main/res/drawable/ic_star.xml" value="0.13" />
@@ -29,6 +30,8 @@
         <entry key="..\:/ImdbMovieApp/app/src/main/res/layout/parent_recycler.xml" value="0.15104166666666666" />
         <entry key="..\:/ImdbMovieApp/app/src/main/res/layout/review_item.xml" value="0.33" />
         <entry key="..\:/ImdbMovieApp/app/src/main/res/layout/some_item.xml" value="0.11865942028985507" />
+        <entry key="..\:/ImdbMovieApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.5" />
+        <entry key="..\:/ImdbMovieApp/app/src/main/res/menu/menu_search.xml" value="0.1638888888888889" />
       </map>
     </option>
   </component>

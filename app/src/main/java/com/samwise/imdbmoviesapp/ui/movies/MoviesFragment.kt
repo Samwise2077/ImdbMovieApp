@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.samwise.imdbmoviesapp.R
 import com.samwise.imdbmoviesapp.api.ImdbResponse
 import com.samwise.imdbmoviesapp.api.Query
@@ -16,6 +17,7 @@ import com.samwise.imdbmoviesapp.data.Movie
 import com.samwise.imdbmoviesapp.databinding.GalleryFragmentBinding
 import com.samwise.imdbmoviesapp.ui.movies.adapters.MoviesItem
 import com.samwise.imdbmoviesapp.ui.movies.adapters.MoviesParentAdapter
+import com.samwise.imdbmoviesapp.ui.movies.adapters.RecyclerViewItem
 import com.samwise.imdbmoviesapp.ui.movies.adapters.SectionItem
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +27,7 @@ private const val TAG = "GalleryFragment"
 class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.EventListener {
 
     private val viewModel: MoviesViewModel by viewModels()
+    var listOfMovies = mutableListOf<RecyclerViewItem>()
 
 
 
@@ -41,22 +44,65 @@ class MoviesFragment : Fragment(R.layout.gallery_fragment), MoviesParentAdapter.
 
         }
 
+        viewModel.mostPopularMovies.observe(viewLifecycleOwner){
+            result ->
+            if(viewModel.shouldCache){
+                Log.d(TAG, "caching...")
+                for (i in result.data!!){
+                    Log.d(TAG, "1$i\n")
+                }
+                listOfMovies[3] = MoviesItem(result.data[result.data.size - 1])
+                adapter.submitList(listOfMovies)
+            }
+        }
+        viewModel.inTheaters.observe(viewLifecycleOwner){
+                result ->
+            if(viewModel.shouldCache){
+                Log.d(TAG, "caching...")
+                for (i in result.data!!){
+                    Log.d(TAG, "1$i\n")
+                }
+                listOfMovies[5] = MoviesItem(result.data[result.data.size - 1])
+                adapter.submitList(listOfMovies)
+
+
+            }
+        }
+
+        viewModel.top250M.observe(viewLifecycleOwner){
+                result ->
+            if(viewModel.shouldCache){
+                Log.d(TAG, "caching...")
+                for (i in result.data!!){
+                    Log.d(TAG, "1$i\n")
+                }
+                listOfMovies[7] = MoviesItem(result.data[result.data.size - 1])
+                adapter.submitList(listOfMovies)
+
+
+            }
+        }
+
         lifecycleScope.launchWhenCreated {
             viewModel.moviesEvent.collect{ event ->
                 when(event){
                     is MoviesViewModel.MoviesEvent.CollectMovies ->{
-                        adapter.submitList(listOf(
+                        listOfMovies = mutableListOf(
                             SectionItem(Query.COMING_SOON.name), MoviesItem(event.list[0]),
                             SectionItem(Query.MOST_POPULAR_MOVIES.name), MoviesItem(event.list[1]),
                             SectionItem(Query.IN_THEATERS.name), MoviesItem(event.list[2]),
                             SectionItem(Query.TOP_250_MOVIES.name), MoviesItem(event.list[3]),
                             SectionItem(Query.TOP_250_TVs.name), MoviesItem(event.list[4])
-                        ))
+                        )
+                        adapter.submitList(listOfMovies)
+                        viewModel.comingSoon = event.list[0]
+                        viewModel.top250T = event.list[4]
                         binding.apply {
                             parentRecyclerView.visibility = View.VISIBLE
                         }
 
                         Log.d(TAG, "onViewCreated: ${event.list[4].typeOfList?.name}")
+                        viewModel.shouldCache = true
                     }
 
                     is MoviesViewModel.MoviesEvent.NavigateToDetailsScreen -> {

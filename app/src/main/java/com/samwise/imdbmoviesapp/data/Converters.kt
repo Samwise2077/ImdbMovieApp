@@ -80,14 +80,16 @@ object Converters {
     }
 
     @TypeConverter
-    fun fromMovieList(source: List<Movie>) : String{
+    fun fromMovieList(source: Array<Movie>) : String{
         val gson = Gson()
         return gson.toJson(source)
     }
 
     @TypeConverter
-    fun toMovieList(source: String) : List<Movie>{
-        return listOf(Gson().fromJson(source, Movie::class.java))
+    fun toMovieList(source: String) : Array<Movie>{
+
+        val movies =  Gson().fromJson(source, Array<Movie>::class.java)
+        return movies
     }
 
    /* @TypeConverter
